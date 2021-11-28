@@ -3,65 +3,74 @@ const CopyPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const path = require('path')
 
-module.exports = {
-    context: path.resolve(__dirname, 'src'),
-    entry: {
-        main: [
-            'core-js/stable',
-            'regenerator-runtime/runtime',
-            './index.js'
-        ],
-    },
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: '[name].bundle.js'
-    },
-    resolve: {
-        extensions: ['.js'],
-        alias: {
-            '@': path.resolve(__dirname, 'src'),
-            '@core': path.resolve(__dirname, 'src', 'core'),
-        }
-    },
-    plugins: [
-        new HtmlWebpackPlugin({
-                template: './index.html'
+module.exports = (env, argv) => {
+
+    const isProd = argv.mode === 'production'
+
+    const filename = (ext) => isProd ? `[name].[contenthash:8].bundle.${ext}` : `[name].bundle.${ext}`
+
+    return {
+        context: path.resolve(__dirname, 'src'),
+        entry: {
+            main: [
+                'core-js/stable',
+                'regenerator-runtime/runtime',
+                './index.js'
+            ],
+        },
+        output: {
+            path: path.resolve(__dirname, 'dist'),
+            filename: filename('js'),
+            clean: true,
+        },
+        resolve: {
+            extensions: ['.js'],
+            alias: {
+                '@': path.resolve(__dirname, 'src'),
+                '@core': path.resolve(__dirname, 'src', 'core'),
             }
-        ),
-        new CopyPlugin({
-            patterns: [
+        },
+        plugins: [
+            new HtmlWebpackPlugin({
+                    template: './index.html'
+                }
+            ),
+            new CopyPlugin({
+                patterns: [
+                    {
+                        from: path.resolve(__dirname, 'src', 'favicon.ico'),
+                        to: path.resolve(__dirname, 'dist')
+                    },
+                ],
+            }),
+            new MiniCssExtractPlugin({
+                filename: filename('css')
+            }),
+        ],
+        devtool: isProd ? false : 'source-map',
+        module: {
+            rules: [
                 {
-                    from: path.resolve(__dirname, 'src', 'favicon.ico'),
-                    to: path.resolve(__dirname, 'dist')
+                    test: /\.s[ac]ss$/i,
+                    use: [
+                        MiniCssExtractPlugin.loader,
+                        // Translates CSS into CommonJS
+                        "css-loader",
+                        // Compiles Sass to CSS
+                        "sass-loader",
+                    ],
+                },
+                {
+                    test: /\.m?js$/,
+                    exclude: /node_modules/,
+                    use: {
+                        loader: "babel-loader",
+                        options: {
+                            presets: ['@babel/preset-env']
+                        }
+                    }
                 },
             ],
-        }),
-        new MiniCssExtractPlugin({
-            filename: '[name].bundle.css'
-        }),
-    ],
-    module: {
-        rules: [
-            {
-                test: /\.s[ac]ss$/i,
-                use: [
-                    MiniCssExtractPlugin.loader,
-                    // Translates CSS into CommonJS
-                    "css-loader",
-                    // Compiles Sass to CSS
-                    "sass-loader",
-                ],
-            },
-            {
-                test: /\.m?js$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: "babel-loader",
-                    options: {
-                        presets: ['@babel/preset-env']
-                    }
-                }
-            },
-        ],
-    },
+        },
+    }
 }
