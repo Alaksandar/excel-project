@@ -10,5 +10,8 @@ module.exports = {
         node: true,
         es6: true,
     },
+    rules: {
+        "linebreak-style": ["error", process.platform === "win32" ? "windows" : "unix"],
+    },
     extends: ["eslint:recommended", "google"],
 }
