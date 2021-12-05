@@ -1,0 +1,79 @@
+@import "mixins";
+@import "variables";
+
+.exel__table {
+  //background-color: #f8f8f8;
+  max-width: 100%;
+  max-height: 100%;
+  background-color: antiquewhite;
+  position: absolute;
+  top: $header-height+$toolbar-height+$formula-height;
+  left: 0;
+  overflow: auto;
+
+  .table-row {
+    display: flex;
+    min-height: 20px;
+    height: $row-height;
+  }
+
+  .row-info {
+    min-width: $row-info-width;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0ecec;
+    border-right: 1px solid $border-color;
+    border-bottom: 1px solid $border-color;
+    outline: none;
+    position: sticky;
+    left: 0;
+    z-index: 3;
+  }
+
+  .row-data {
+    display: flex;
+  }
+
+  .column-info {
+    min-width: 40px;
+    width: $cell-width;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0ecec;
+    border-right: 1px solid $border-color;
+    border-bottom: 1px solid $border-color;
+    outline: none;
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+  }
+
+  .cell {
+    min-width: 40px;
+    width: $cell-width;
+    height: 100%;
+    padding: 5px;
+    overflow: hidden;
+    font-size: 18px;
+    color: #000;
+    display: flex;
+    align-items: center;
+    border-right: 1px solid $border-color;
+    border-bottom: 1px solid $border-color;
+    background-color: whitesmoke;
+    outline: none;
+    white-space: nowrap;
+  }
+
+  .selected {
+    border: none;
+    outline: 2px solid #1a73e8;
+    z-index: 2;
+
+  }
+
+}
