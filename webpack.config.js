@@ -29,7 +29,7 @@ module.exports = (env, argv) => {
                 filename: filename('css')
             }),
         ]
-        console.log(!isProd)
+        console.log(argv.mode)
         !isProd ? base.push(new ESLintPlugin()) : false
 
         return base
@@ -58,7 +58,7 @@ module.exports = (env, argv) => {
             }
         },
         devServer: {
-            port: 3000,
+            port: 8800,
             open: true,
             hot: true,
             watchFiles: './',
