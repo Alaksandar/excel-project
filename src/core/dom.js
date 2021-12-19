@@ -18,10 +18,15 @@ class Dom {
         return this
     }
 
+    on(eventType, callback) {
+        this.$el.addEventListener(eventType, callback)
+    }
+
     append(node) {
         if (node instanceof Dom) {
             node = node.$el
-        } console.log('node', node)
+        }
+        // console.log('node', node)
         this.$el.append(node)
     }
 }

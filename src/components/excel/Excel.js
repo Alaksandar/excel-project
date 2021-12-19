@@ -1,9 +1,9 @@
 import {$} from "@core/dom";
 
 export class Excel {
-    constructor(selector, options) {
-        this.$el = $(selector)
-        this.components = options.components || []
+    constructor(selector, components) {
+        this.$app = $(selector)
+        this.components = components.components || []
     }
 
     getRoot() {
@@ -15,23 +15,22 @@ export class Excel {
             const $el = $.create('div', Component.className)
             const component = new Component($el)
             $el.html(component.toHTML())
-            // console.log('$el', $el)
-            console.log(`root $el from Excel`, $el)
-            console.log('component', component)
+
+            // console.log(`root $el from Excel`, $el)
+            // console.log('component', component)
 
             $root.append($el)
             return component
-
         })
 
         return $root
     }
 
     render() {
-        console.log('$el', this.$el)
-
-        this.$el.append(this.getRoot())
-        console.log('this.components', this.components)
+        console.log('$app', this.$app)
+        this.$app.append(this.getRoot())
+        console.log('components', this.components)
+        this.components.forEach(components => components.init())
 
     }
 }

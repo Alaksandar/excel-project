@@ -2,6 +2,14 @@ import {ExcelComponent} from "@core/ExcelComponent";
 
 export class Table extends ExcelComponent {
     static className = 'excel__table'
+
+    // constructor($root) {
+    //     super($root, {
+    //         name: 'Table',
+    //         listeners: ['input', 'submit']
+    //     });
+    // }
+
     toHTML() {
         return `
             <div class="table-row">

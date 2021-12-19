@@ -1,11 +1,15 @@
 import {DOMListener} from "@core/DOMListener";
 
 export class ExcelComponent extends DOMListener {
-     constructor($root) {
-         super($root);
+     constructor($root, options = {}) {
+         super($root, options.listeners);
+         this.name = options.name || ''
+         // this.$root = $root
+         // console.log('$root for ExcelComponent', $root)
+     }
 
-         this.$root = $root
-         console.log('$root for ExcelComponent', $root)
+     init() {
+         this.initDOMListeners()
      }
 
     toHTML() {

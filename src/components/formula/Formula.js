@@ -1,14 +1,25 @@
 import {ExcelComponent} from '@core/ExcelComponent';
-import {Toolbar} from "@/components/toolbar/Toolbar";
 
 export class Formula extends ExcelComponent {
     static className = 'excel__formula'
 
     constructor($root) {
-        super($root);
+        super($root, {
+            name: 'Formula',
+            listeners: ['input', 'click']
+        });
 
-        this.$root = $root
-        console.log('$root for Formula', $root)
+        // this.$root = $root
+        // console.log('$root for Formula', $root)
+    }
+
+    onInput(e) {
+        console.log('Formula root', this.$root)
+        console.log('Formula onInput', e.target.textContent.trim())
+    }
+
+    onClick(e) {
+        console.log('Formula onClick', e)
     }
 
     toHTML() {
