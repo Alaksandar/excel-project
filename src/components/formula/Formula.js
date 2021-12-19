@@ -14,12 +14,11 @@ export class Formula extends ExcelComponent {
     }
 
     onInput(e) {
-        console.log('Formula root', this.$root)
-        console.log('Formula onInput', e.target.textContent.trim())
+        console.log(`${this.name} onInput`, e.target.textContent.trim())
     }
 
     onClick(e) {
-        console.log('Formula onClick', e)
+        console.log(`${this.name} onClick`, e)
     }
 
     toHTML() {

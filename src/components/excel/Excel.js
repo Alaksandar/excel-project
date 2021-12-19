@@ -16,6 +16,11 @@ export class Excel {
             const component = new Component($el)
             $el.html(component.toHTML())
 
+            // DEBUG:
+            // if(component.name) {
+            //     window['c' + component.name] = component
+            // }
+
             // console.log(`root $el from Excel`, $el)
             // console.log('component', component)
 
@@ -31,6 +36,5 @@ export class Excel {
         this.$app.append(this.getRoot())
         console.log('components', this.components)
         this.components.forEach(components => components.init())
-
     }
 }

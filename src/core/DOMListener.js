@@ -15,8 +15,7 @@ export class DOMListener {
     initDOMListeners() {
         const name = this.name
         this.listeners.forEach(listener => {
-            console.log(
-                `initDOMListeners: ${name} listener`, listener)
+            // console.log(`initDOMListeners: ${name} listener`, listener)
             const method = toMethodName(listener)
             console.log('method', method)
             if(!this[method]) {
@@ -24,7 +23,16 @@ export class DOMListener {
                     `Method ${method} is not implemented in ${name} Component`
                 )
             }
-            this.$root.on(listener, this[method].bind(this))
+            this[method] = this[method].bind(this)
+            this.$root.on(listener, this[method])
+        })
+    }
+
+    removeDOMListeners() {
+        const name = this.name
+        this.listeners.forEach(listener => {
+            const method = toMethodName(listener)
+            this.$root.off(listener, this[method])
         })
     }
 
