@@ -10,6 +10,7 @@
   top: $header-height+$toolbar-height+$formula-height;
   left: 0;
   overflow: auto;
+  padding-bottom: 150px;
 
   .table-row {
     display: flex;
@@ -27,9 +28,9 @@
     border-right: 1px solid $border-color;
     border-bottom: 1px solid $border-color;
     outline: none;
-    position: sticky;
-    left: 0;
-    z-index: 3;
+    //position: sticky;
+    //left: 0;
+    //z-index: 3;
   }
 
   .row-data {
@@ -47,9 +48,9 @@
     border-right: 1px solid $border-color;
     border-bottom: 1px solid $border-color;
     outline: none;
-    position: sticky;
-    bottom: 0;
-    z-index: 2;
+    //position: sticky;
+    //bottom: 0;
+    //z-index: 2;
   }
 
   .cell {
