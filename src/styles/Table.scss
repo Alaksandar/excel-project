@@ -11,16 +11,15 @@
   left: 0;
   overflow: auto;
   padding-bottom: 150px;
+  user-select: text;
 
   .table-row {
     display: flex;
     min-height: 20px;
-    height: $row-height;
+    //height: $row-height;
   }
 
-  .row-info {
-    min-width: $row-info-width;
-    height: 100%;
+  .row-info, .column-info {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -28,9 +27,17 @@
     border-right: 1px solid $border-color;
     border-bottom: 1px solid $border-color;
     outline: none;
-    //position: sticky;
-    //left: 0;
-    //z-index: 3;
+    position: relative;
+  }
+
+  .row-info span, .column-info span {
+    user-select: none;
+  }
+
+  .row-info {
+    min-width: $row-info-width;
+    min-height: 20px;
+    height: $row-height;
   }
 
   .row-data {
@@ -41,22 +48,13 @@
     min-width: 40px;
     width: $cell-width;
     height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #f0ecec;
-    border-right: 1px solid $border-color;
-    border-bottom: 1px solid $border-color;
-    outline: none;
-    //position: sticky;
-    //bottom: 0;
-    //z-index: 2;
   }
 
   .cell {
     min-width: 40px;
     width: $cell-width;
-    height: 100%;
+    height: $row-height;
+    min-height: 20px;
     padding: 5px;
     overflow: hidden;
     font-size: 18px;
@@ -72,9 +70,39 @@
 
   .selected {
     border: none;
-    outline: 2px solid #1a73e8;
+    outline: 2px solid $primary-color;
     z-index: 2;
 
+  }
+
+  .col-resize, .row-resize {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    background-color: $primary-color;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  .col-resize {
+    top: 0;
+    width: 3px;
+
+    &:hover {
+      cursor: col-resize;
+    }
+  }
+
+  .row-resize {
+    left: 0;
+    height: 3px;
+
+    &:hover {
+      cursor: row-resize;
+    }
   }
 
 }

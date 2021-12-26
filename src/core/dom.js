@@ -33,6 +33,32 @@ class Dom {
         // console.log('node', node)
         this.$el.append(node)
     }
+
+    closest(selector) {
+        return $(this.$el.closest(selector))
+    }
+
+    get data() {
+        return this.$el.dataset
+    }
+
+    findAll(selector) {
+        return this.$el.querySelectorAll(selector)
+    }
+
+    css(styles = {}) {
+        Object.keys(styles)
+            .forEach(key => {
+                this.$el.style[key] = styles[key]
+        })
+        return this
+    }
+
+    getCoords() {
+        return this.$el.getBoundingClientRect()
+    }
+
+
 }
 
 export function $(selector) {
