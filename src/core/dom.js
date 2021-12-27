@@ -18,6 +18,10 @@ class Dom {
         return this
     }
 
+    removeEl() {
+        this.$el.remove()
+    }
+
     on(eventType, callback) {
         this.$el.addEventListener(eventType, callback)
     }
@@ -44,6 +48,10 @@ class Dom {
 
     findAll(selector) {
         return this.$el.querySelectorAll(selector)
+    }
+
+    addClass(selector) {
+        return this.$el.classList.add(selector)
     }
 
     css(styles = {}) {
