@@ -3,18 +3,36 @@ const CODES = {
     Z: 90
 }
 
-function toCell(selected = '') {
-    return `<div class="cell ${selected}" contenteditable></div>`
+function toCell(index, selected = '', num) {
+    return `<div 
+        class="cell ${selected}" 
+        data-row="${num}"
+        data-column="${toChar('', index)}" 
+        contenteditable>
+    </div>`
 }
 
-function toCol(col) {
-    return `<div class="column-info">${col}</div>`
+function toCol(col, i) {
+    // console.log(i)
+    return `
+        <div class="column-info" data-type="resizable" data-column="${col}">
+            <span>${col}</span>
+            <div class="col-resize" data-resize="col"></div>
+        </div>
+    `
 }
 
 function createRow(content, num = '') {
+    const rowResize = num
+        ? `<div class="row-resize" data-resize="row"></div>`
+        : ''
+
     return `
         <div class="table-row">
-            <div class="row-info">${num}</div>
+            <div class="row-info" data-type="resizable" data-row="${num}">
+                <span>${num}</span>
+                ${rowResize}
+            </div>
             <div class="row-data">${content}</div>
         </div>
     `
@@ -39,19 +57,23 @@ export function createTable(rowsCount = 10) {
         .fill('')
         .map((e, i) => {
             if(i === 0){
-                return toCell('selected')
+                return toCell(i, 'selected', 1)
             }
-            return toCell()
+            return toCell(i, '', 1)
         })
         .join('')
     rows.push(createRow(selectedCellRow, 1))
 
-    for (let i = 0; i < rowsCount; i++) {
+    for (let i = 1; i < rowsCount; i++) {
+        const num = i+1
         const cells = new Array(colsCount)
             .fill('')
-            .map(toCell)
+            .map((e, i) => {
+                return toCell(i, '', num)
+            })
             .join('')
-        rows.push(createRow(cells, i + 2))
+
+        rows.push(createRow(cells, i + 1))
     }
 
     return rows.join('')

@@ -18,6 +18,10 @@ class Dom {
         return this
     }
 
+    removeEl() {
+        this.$el.remove()
+    }
+
     on(eventType, callback) {
         this.$el.addEventListener(eventType, callback)
     }
@@ -33,6 +37,36 @@ class Dom {
         // console.log('node', node)
         this.$el.append(node)
     }
+
+    closest(selector) {
+        return $(this.$el.closest(selector))
+    }
+
+    get data() {
+        return this.$el.dataset
+    }
+
+    findAll(selector) {
+        return this.$el.querySelectorAll(selector)
+    }
+
+    addClass(selector) {
+        return this.$el.classList.add(selector)
+    }
+
+    css(styles = {}) {
+        Object.keys(styles)
+            .forEach(key => {
+                this.$el.style[key] = styles[key]
+        })
+        return this
+    }
+
+    getCoords() {
+        return this.$el.getBoundingClientRect()
+    }
+
+
 }
 
 export function $(selector) {

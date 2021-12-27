@@ -1,9 +1,9 @@
 import {$} from "@core/dom";
 
 export class Excel {
-    constructor(selector, components) {
+    constructor(selector, options) {
         this.$app = $(selector)
-        this.components = components.components || []
+        this.components = options.components || []
     }
 
     getRoot() {
@@ -32,9 +32,7 @@ export class Excel {
     }
 
     render() {
-        console.log('$app', this.$app)
         this.$app.append(this.getRoot())
-        console.log('components', this.components)
         this.components.forEach(components => components.init())
     }
 }
