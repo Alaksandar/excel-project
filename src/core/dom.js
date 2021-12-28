@@ -46,12 +46,20 @@ class Dom {
         return this.$el.dataset
     }
 
+    find(selector) {
+        return $(this.$el.querySelector(selector))
+    }
+
     findAll(selector) {
         return this.$el.querySelectorAll(selector)
     }
 
-    addClass(selector) {
-        return this.$el.classList.add(selector)
+    addClass(className) {
+        return this.$el.classList.add(className)
+    }
+
+    removeClass(className) {
+        return this.$el.classList.remove(className)
     }
 
     css(styles = {}) {

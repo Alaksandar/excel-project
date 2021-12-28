@@ -4,9 +4,12 @@ export class ExcelComponent extends DOMListener {
      constructor($root, options = {}) {
          super($root, options.listeners);
          this.name = options.name || ''
-         // this.$root = $root
-         // console.log('$root for ExcelComponent', $root)
+
+         // component preparation and supporting functionality
+         this.prepare()
      }
+
+     prepare() {}
 
      init() {
          this.initDOMListeners()
@@ -16,6 +19,7 @@ export class ExcelComponent extends DOMListener {
         this.removeDOMListeners()
     }
 
+    // returns the component template
     toHTML() {
         return ``
     }
