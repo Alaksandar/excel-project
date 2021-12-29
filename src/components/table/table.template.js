@@ -12,8 +12,8 @@ function toCell(row) {          //  or:  function toCell(row, col)
                 data-column="${toChar('', col)}" 
                 data-id="${row}:${col}"
                 data-charCoords="${row+1}:${toChar('', col)}"
-                contenteditable>
-            </div>
+                contenteditable
+            ></div>
         `
     }
 }

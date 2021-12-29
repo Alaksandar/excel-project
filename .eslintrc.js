@@ -11,6 +11,7 @@ module.exports = {
         es6: true,
     },
     rules: {
+        "max-len": "off",
         "semi": "off",
         "arrow-parens": "off",
         "comma-dangle": "off",
