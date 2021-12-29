@@ -27,7 +27,7 @@ export class TableSelection {
         this.group = group
         this.group.forEach($el => {
             ($el.id() === this.prev.id()
-                || $el.id() === target)
+                || $el.id() === target.id())
                     ? $el.css({backgroundColor: '#1a73e821'})
                     : null
             $el.addClass(TableSelection.className)

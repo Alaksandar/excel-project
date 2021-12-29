@@ -5,6 +5,7 @@ import {resizeHandler} from "@/components/table/table.resize"
 import {shouldResize} from "@/components/table/table.functions"
 import {isCell} from "@/components/table/table.functions"
 import {TableSelection} from "@/components/table/TableSelection";
+import {matrix, range} from "@core/utils";
 
 export class Table extends ExcelComponent {
     static className = 'excel__table'
@@ -20,23 +21,14 @@ export class Table extends ExcelComponent {
 
         if(shouldResize(event)) {
             resizeHandler(this.$root, event)
-        }
 
-        if(isCell(event)) {
+        } else if(isCell(event)) {
             const target = $(event.target)
 
             if(event.shiftKey) {
-                const current = target.id(true)
-                const prev = this.selection.prev.id(true)
-                const rows = range(prev.row, current.row)
-                const cols = range(prev.col, current.col)
-
-                const ids = cols.reduce((acc, col) => {
-                    rows.forEach(row => acc.push(`${row}:${col}`))
-                    return acc
-                }, [])
-                const $cells = ids.map(id => this.$root.find(`[data-id="${id}"]`))
-                this.selection.selectGroup($cells, target.id())
+                const $cells = matrix(target, this.selection.prev)
+                    .map(id => this.$root.find(`[data-id="${id}"]`))
+                this.selection.selectGroup($cells, target)
 
             } else {
                 this.selection.select(target)
@@ -59,14 +51,4 @@ export class Table extends ExcelComponent {
     toHTML() {
         return createTable(15)
     }
-}
-
-
-function range(start, end) {
-    if(start > end) {
-        [start, end] = [end, start]
-    }
-    return new Array(end - start + 1)
-        .fill('')
-        .map((_, index) => start + index)
 }
