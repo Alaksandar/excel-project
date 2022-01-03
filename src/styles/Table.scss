@@ -68,9 +68,9 @@
   }
 
   .selected {
-    border: none;
+    //border: none;
     outline: 2px solid $primary-color;
-    z-index: 2;
+    z-index: 99;
 
   }
 

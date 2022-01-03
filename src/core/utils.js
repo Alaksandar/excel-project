@@ -14,16 +14,3 @@ export function range(start, end) {
         .fill('')
         .map((_, index) => start + index)
 }
-
-export  function matrix($current, $prev) {
-    const current = $current.id(true)
-    const prev = $prev.id(true)
-
-    const rows = range(prev.row, current.row)
-    const cols = range(prev.col, current.col)
-
-    return cols.reduce((acc, col) => {
-        rows.forEach(row => acc.push(`${row}:${col}`))
-        return acc
-    }, [])
-}

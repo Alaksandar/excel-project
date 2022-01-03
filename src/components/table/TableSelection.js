@@ -8,10 +8,10 @@ export class TableSelection {
 
     select($el) {
         this.clear()
-        $el.addClass(TableSelection.className)
+        $el.focus().addClass(TableSelection.className)
         this.group.push($el)
         this.prev = $el
-        this.prev.css({backgroundColor: '#1a73e821'})
+        return this.group
     }
 
     clear() {
@@ -20,18 +20,21 @@ export class TableSelection {
             $el.css({backgroundColor: 'whitesmoke'})
         })
         this.group = []
+        document.activeElement.blur()
     }
 
-    selectGroup(group = [], target) {
+    selectGroup(group = []) {
         this.clear()
         this.group = group
         this.group.forEach($el => {
-            ($el.id() === this.prev.id()
-                || $el.id() === target.id())
-                    ? $el.css({backgroundColor: '#1a73e821'})
-                    : null
-            $el.addClass(TableSelection.className)
+            console.log($el.id() === this.prev.id())
+            if($el.id() === this.prev.id()) {
+                $el.focus().addClass(TableSelection.className)
+            } else {
+                $el.css({backgroundColor: '#1a73e821'})
+            }
         })
+        console.log(this.group)
         return this.group
     }
 }

@@ -2,10 +2,9 @@ import {ExcelComponent} from "@core/ExcelComponent";
 import {$} from "@core/dom";
 import {createTable} from "@/components/table/table.template";
 import {resizeHandler} from "@/components/table/table.resize"
-import {shouldResize} from "@/components/table/table.functions"
-import {isCell} from "@/components/table/table.functions"
+import {changeCell, shouldResize, isCell, matrix} from "./table.functions"
 import {TableSelection} from "@/components/table/TableSelection";
-import {matrix, range} from "@core/utils";
+
 
 export class Table extends ExcelComponent {
     static className = 'excel__table'
@@ -13,25 +12,46 @@ export class Table extends ExcelComponent {
     constructor($root) {
         super($root, {
             name: 'Table',
-            listeners: ['mousedown']
+            listeners: ['mousedown', 'keydown']
         });
+        this.rowsCount = 15
+    }
+
+    onKeydown(event) {
+        const  keys = [
+            "Enter",
+            "Tab",
+            "ArrowDown",
+            "ArrowUp",
+            "ArrowRight",
+            "ArrowLeft"
+        ]
+        if(isCell(event)) {
+            const id = this.selection.prev.id(true)
+            if(keys.includes(event.key)) {
+                event.preventDefault()
+                this.selection.select(changeCell(id, this.$root, event, this.lastId))
+
+            }
+            // if(keys.includes(key) && event.shiftKey) {
+            //     const $nextCell = this.selection.select(this.$root.find(shiftCell(row, col, this.$root, event)))
+            //     console.log("shift")
+            //
+            // }
+        }
     }
 
     onMousedown(event) {
-
         if(shouldResize(event)) {
             resizeHandler(this.$root, event)
 
         } else if(isCell(event)) {
-            const target = $(event.target)
-
             if(event.shiftKey) {
-                const $cells = matrix(target, this.selection.prev)
+                const $cells = matrix($(event.target), this.selection.prev)
                     .map(id => this.$root.find(`[data-id="${id}"]`))
-                this.selection.selectGroup($cells, target)
-
+                this.selection.selectGroup($cells)
             } else {
-                this.selection.select(target)
+                this.selection.select($(event.target))
             }
         }
     }
@@ -44,11 +64,12 @@ export class Table extends ExcelComponent {
     init() {
         super.init()
 
-        this.$cell = this.$root.find(`[data-id="0:0"]`)
-        this.selection.select(this.$cell)
+        this.selection.select(this.$root.find(`[data-id="0:0"]`))
+        const allCells = this.$root.findAll(`[data-type="cell"]`)
+        this.lastId = $(allCells[allCells.length - 1]).id(true)
     }
 
     toHTML() {
-        return createTable(15)
+        return createTable(this.rowsCount)
     }
 }
