@@ -14,3 +14,16 @@ export function range(start, end) {
         .fill('')
         .map((_, index) => start + index)
 }
+
+export function toEndLineCursor(node) {
+    if (!(node instanceof HTMLElement)) {
+        console.error('Node is not instanceof HTMLElement!')
+        return
+    }
+    const range = document.createRange();
+    range.selectNodeContents(node);
+    range.collapse(false);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+}

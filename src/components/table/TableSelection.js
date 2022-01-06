@@ -3,14 +3,14 @@ export class TableSelection {
 
     constructor() {
         this.group = []
-        this.prev = null
+        this.current = null
     }
 
     select($el) {
         this.clear()
         $el.focus().addClass(TableSelection.className)
         this.group.push($el)
-        this.prev = $el
+        this.current = $el
         return this.group
     }
 
@@ -20,21 +20,18 @@ export class TableSelection {
             $el.css({backgroundColor: 'whitesmoke'})
         })
         this.group = []
-        document.activeElement.blur()
     }
 
     selectGroup(group = []) {
         this.clear()
         this.group = group
         this.group.forEach($el => {
-            console.log($el.id() === this.prev.id())
-            if($el.id() === this.prev.id()) {
+            if($el.id() === this.current.id()) {
                 $el.focus().addClass(TableSelection.className)
             } else {
                 $el.css({backgroundColor: '#1a73e821'})
             }
         })
-        console.log(this.group)
         return this.group
     }
 }

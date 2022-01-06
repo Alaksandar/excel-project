@@ -1,5 +1,4 @@
 import {range} from "@core/utils";
-import {$} from "@core/dom";
 
 export function shouldResize(event) {
     return event.target.dataset.resize
@@ -9,13 +8,12 @@ export function isCell(event) {
     return event.target.dataset.type === 'cell'
 }
 
-export  function matrix($current, $prev) {
+export  function matrix($target, $current) {
+    const target = $target.id(true)
     const current = $current.id(true)
-    const prev = $prev.id(true)
-    console.log(current, prev)
 
-    const rows = range(prev.row, current.row)
-    const cols = range(prev.col, current.col)
+    const rows = range(current.row, target.row)
+    const cols = range(current.col, target.col)
 
     return cols.reduce((acc, col) => {
         rows.forEach(row => acc.push(`${row}:${col}`))
@@ -23,31 +21,22 @@ export  function matrix($current, $prev) {
     }, [])
 }
 
-export function changeCell({row, col}, $root, event, lastId) {
-    const lastRow = lastId.row
-    const lastCol = lastId.col
-
+export function changeCell({row, col}, event, lastId) {
     switch (event.key) {
         case "Enter":
         case "ArrowDown":
-            row++
+            row = ++row <= lastId.row ? row : lastId.row
             break;
         case "ArrowUp":
-            row--
+            row = --row >= 0 ? row : 0
             break;
         case "Tab":
         case "ArrowRight":
-            col++
+            col = ++col <= lastId.col ? col : lastId.col
             break;
         case "ArrowLeft":
-            col--
+            col = --col >= 0 ? col : 0
             break;
     }
-
-    row = row >= 0 ? row : 0
-    col = col >= 0 ? col : 0
-    row = row <= lastRow ? row : lastRow
-    col = col <= lastCol ? col : lastCol
-
-    return $root.find(`[data-id="${row}:${col}"]`)
+    return `[data-id="${row}:${col}"]`
 }

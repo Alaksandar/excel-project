@@ -13,13 +13,19 @@ class Dom {
         return this.$el.innerHTML.trim()
     }
 
+    text(text) {
+        if (typeof text === 'string') {
+            return this.$el.textContent = text.trim()
+        }
+        if (this.$el.tagName.toLowerCase() === 'input') {
+            return this.$el.value.trim()
+        }
+        return this.$el.textContent.trim()
+    }
+
     clear() {
         this.html('')
         return this
-    }
-
-    removeEl() {
-        this.$el.remove()
     }
 
     on(eventType, callback) {
@@ -30,11 +36,14 @@ class Dom {
         this.$el.removeEventListener(eventType, callback)
     }
 
+    get node() {
+        return this.$el
+    }
+
     append(node) {
         if (node instanceof Dom) {
             node = node.$el
         }
-        // console.log('node', node)
         this.$el.append(node)
     }
 
