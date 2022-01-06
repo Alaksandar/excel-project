@@ -23,7 +23,6 @@ export class Table extends ExcelComponent {
         this.$emit('table:select', $cell)
         if ($cell.text()) {
             toEndLineCursor($cell.node())
-            console.log($cell)
         }
     }
 
