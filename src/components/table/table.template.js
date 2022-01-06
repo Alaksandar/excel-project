@@ -2,18 +2,23 @@ const CODES = {
     A: 65,
     Z: 90
 }
-
-function toCell(index, selected = '', num) {
-    return `<div 
-        class="cell ${selected}" 
-        data-row="${num}"
-        data-column="${toChar('', index)}" 
-        contenteditable>
-    </div>`
+function toCell(row) {          //  or:  function toCell(row, col)
+    return function(_, col) {   //
+        return `
+            <div 
+                class="cell" 
+                data-type="cell"
+                data-row="${row+1}"
+                data-column="${toChar('', col)}" 
+                data-id="${row}:${col}"
+                data-charCoords="${row+1}:${toChar('', col)}"
+                contenteditable
+            ></div>
+        `
+    }
 }
 
-function toCol(col, i) {
-    // console.log(i)
+function toCol(col) {
     return `
         <div class="column-info" data-type="resizable" data-column="${col}">
             <span>${col}</span>
@@ -22,15 +27,15 @@ function toCol(col, i) {
     `
 }
 
-function createRow(content, num = '') {
-    const rowResize = num
+function createRow(content, i = '') {
+    const rowResize = i
         ? `<div class="row-resize" data-resize="row"></div>`
         : ''
 
     return `
         <div class="table-row">
-            <div class="row-info" data-type="resizable" data-row="${num}">
-                <span>${num}</span>
+            <div class="row-info" data-type="resizable" data-row="${i}">
+                ${i ? `<span>${i}</span>` : ''}
                 ${rowResize}
             </div>
             <div class="row-data">${content}</div>
@@ -53,27 +58,23 @@ export function createTable(rowsCount = 10) {
         .join('')
     rows.push(createRow(cols))
 
-    const selectedCellRow = new Array(colsCount)
-        .fill('')
-        .map((e, i) => {
-            if(i === 0){
-                return toCell(i, 'selected', 1)
-            }
-            return toCell(i, '', 1)
-        })
-        .join('')
-    rows.push(createRow(selectedCellRow, 1))
+    // const selectedCellRow = new Array(colsCount)
+    //     .fill('')
+    //     .map((e, i) => {
+    //         if(i === 0){
+    //             return toCell(i, 'selected', 1)
+    //         }
+    //         return toCell(i, '', 1)
+    //     })
+    //     .join('')
+    // rows.push(createRow(selectedCellRow, 1))
 
-    for (let i = 1; i < rowsCount; i++) {
-        const num = i+1
+    for (let row = 0; row < rowsCount; row++) {
         const cells = new Array(colsCount)
             .fill('')
-            .map((e, i) => {
-                return toCell(i, '', num)
-            })
+            .map(toCell(row)) // or: .map((_, col) => toCell(row, col))
             .join('')
-
-        rows.push(createRow(cells, i + 1))
+        rows.push(createRow(cells, row + 1))
     }
 
     return rows.join('')

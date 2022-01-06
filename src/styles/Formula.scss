@@ -15,10 +15,14 @@
 
   .formula-info {
     min-width: $row-info-width;
+    height: 100%;
     text-align: center;
     border-right: 1px solid $border-color;
     font-family: math;
     font-style: italic;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
   }
 

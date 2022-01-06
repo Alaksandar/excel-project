@@ -13,13 +13,19 @@ class Dom {
         return this.$el.innerHTML.trim()
     }
 
+    text(text) {
+        if (typeof text === 'string') {
+            return this.$el.textContent = text.trim()
+        }
+        if (this.$el.tagName.toLowerCase() === 'input') {
+            return this.$el.value.trim()
+        }
+        return this.$el.textContent.trim()
+    }
+
     clear() {
         this.html('')
         return this
-    }
-
-    removeEl() {
-        this.$el.remove()
     }
 
     on(eventType, callback) {
@@ -30,11 +36,14 @@ class Dom {
         this.$el.removeEventListener(eventType, callback)
     }
 
+    get node() {
+        return this.$el
+    }
+
     append(node) {
         if (node instanceof Dom) {
             node = node.$el
         }
-        // console.log('node', node)
         this.$el.append(node)
     }
 
@@ -46,12 +55,36 @@ class Dom {
         return this.$el.dataset
     }
 
+    find(selector) {
+        return $(this.$el.querySelector(selector))
+    }
+
     findAll(selector) {
         return this.$el.querySelectorAll(selector)
     }
 
-    addClass(selector) {
-        return this.$el.classList.add(selector)
+    addClass(className) {
+        return this.$el.classList.add(className)
+    }
+
+    removeClass(className) {
+        return this.$el.classList.remove(className)
+    }
+
+    id(parse) {
+        if(parse) {
+            const parsed = this.data.id.split(':')
+            return {
+                row: +parsed[0],
+                col: +parsed[1]
+            }
+        }
+        return this.data.id
+    }
+
+    focus() {
+        this.$el.focus()
+        return this
     }
 
     css(styles = {}) {
@@ -65,9 +98,8 @@ class Dom {
     getCoords() {
         return this.$el.getBoundingClientRect()
     }
-
-
 }
+
 
 export function $(selector) {
     return new Dom(selector)

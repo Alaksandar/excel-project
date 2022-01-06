@@ -11,6 +11,7 @@ module.exports = {
         es6: true,
     },
     rules: {
+        "max-len": "off",
         "semi": "off",
         "arrow-parens": "off",
         "comma-dangle": "off",
@@ -25,6 +26,7 @@ module.exports = {
         "padded-blocks": "off",
         "no-unused-vars": "off",
         "keyword-spacing": "off",
+        "no-multi-spaces": "off",
         "linebreak-style": ["error", process.platform === "win32" ? "windows" : "unix"],
     },
     extends: ["eslint:recommended", "google"],
