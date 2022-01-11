@@ -8,28 +8,19 @@ const DEFAULT_HEIGHT = 24
 
 
 function getHeight(row, state) {
-    const rowState = state.rowState ? state.rowState : ''
-    const height = rowState[row]
-        ? rowState[row] + 'px'
-        : DEFAULT_HEIGHT + 'px'
-    return height
+    console.log(state)
+    return (state[row] || DEFAULT_HEIGHT) + 'px'
 }
 
 function getWidth(index, state) {
-    const colState = state.colState ? state.colState : ''
-    const width = colState[index]
-        ? colState[index] + 'px'
-        : DEFAULT_WIDTH + 'px'
-    return width
+    return (state[index] || DEFAULT_WIDTH) + 'px'
 }
 
 function toCell(row, state) {
-    const height = getHeight(row, state)
     return function(_, index) {
         const width = getWidth(index, state)
-        const style = (width !==  DEFAULT_WIDTH + 'px'
-            || height !== DEFAULT_HEIGHT + 'px')
-                ? `style="width:${width}; height:${height}"` : ''
+        const style = width !==  DEFAULT_WIDTH + 'px'
+                ? `style="width:${width};` : ''
         return `
             <div 
                 class="cell"
@@ -61,22 +52,23 @@ function toCol({col, index, width}) {
     `
 }
 
-function createRow(content, index = '', state) {
+function createRow(content, state, index = '') {
     const isResizable = (index || index === 0)
-    const height = (isResizable && getHeight(index, state) !== '24px')
-        ? getHeight(index, state) : ''
+    const height = getHeight(index, state)
+    console.log(height)
 
     return `
-        <div class="table-row">
-            <div class="row-info"
-                ${isResizable 
-                    ? `data-type="resizable"
-                        data-row="${index}"
-                        style="height:${height}">    
+        <div 
+            class="table-row" 
+            ${isResizable ? `
+                style="height:${height}" 
+                data-type="resizable" 
+                data-row="${index}"` : ''}
+        >
+            <div class="row-info">    
+                ${isResizable ? `
                     <span>${index + 1}</span>
-                    <div class="row-resize" data-resize="row"></div>` 
-                    : '>' 
-                }
+                    <div class="row-resize" data-resize="row"></div>` : ''}
             </div>
             <div class="row-data">${content}</div>
         </div>
@@ -101,17 +93,17 @@ export function createTable(rowsCount = 10, state = {}) {
     const cols = new Array(colsCount)
         .fill('')
         .map(toChar)
-        .map(getWidthFrom(state))
+        .map(getWidthFrom(state.colState))
         .map(toCol)
         .join('')
-    rows.push(createRow(cols))
+    rows.push(createRow(cols, {}))
 
     for (let row = 0; row < rowsCount; row++) {
         const cells = new Array(colsCount)
             .fill('')
-            .map(toCell(row, state))
+            .map(toCell(row, state.colState))
             .join('')
-        rows.push(createRow(cells, row, state))
+        rows.push(createRow(cells, state.rowState, row))
     }
 
     return rows.join('')
