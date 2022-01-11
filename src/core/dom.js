@@ -36,7 +36,7 @@ class Dom {
         this.$el.removeEventListener(eventType, callback)
     }
 
-    get node() {
+    node() {
         return this.$el
     }
 

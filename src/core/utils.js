@@ -15,6 +15,13 @@ export function range(start, end) {
         .map((_, index) => start + index)
 }
 
+export function storage(key, data = null) {
+    if(!data) {
+        return JSON.parse(localStorage.getItem(key))
+    }
+    localStorage.setItem(key, JSON.stringify(data))
+}
+
 export function toEndLineCursor(node) {
     if (!(node instanceof HTMLElement)) {
         console.error('Node is not instanceof HTMLElement!')

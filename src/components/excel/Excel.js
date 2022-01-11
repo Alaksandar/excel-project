@@ -5,12 +5,16 @@ export class Excel {
     constructor(selector, options) {
         this.$app = $(selector)
         this.components = options.components || []
+        this.store = options.store
         this.emitter = new Emitter()
     }
 
     getRoot() {
         const $root = $.create('div', 'excel')
-        const componentOptions = {emitter: this.emitter}
+        const componentOptions = {
+            store: this.store,
+            emitter: this.emitter
+        }
         this.components = this.components.map(Component => {
             const $el = $.create('div', Component.className)
             const component = new Component($el, componentOptions)

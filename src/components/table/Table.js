@@ -1,10 +1,12 @@
 import {ExcelComponent} from "@core/ExcelComponent";
 import {$} from "@core/dom";
-import {toEndLineCursor} from "@core/utils";
+import {storage, toEndLineCursor} from "@core/utils";
 import {createTable} from "@/components/table/table.template";
 import {resizeHandler} from "@/components/table/table.resize"
 import {changeCell, shouldResize, isCell, matrix} from "./table.functions"
 import {TableSelection} from "@/components/table/TableSelection";
+import * as action from "@/redux/actions"
+import {store} from "core-js/internals/reflect-metadata";
 
 
 export class Table extends ExcelComponent {
@@ -14,17 +16,44 @@ export class Table extends ExcelComponent {
         super($root, {
             name: 'Table',
             listeners: ['mousedown', 'keydown', 'input'],
-            ...options // Excel: {emitter: this.emitter}
+            ...options // Excel: componentOptions
         });
     }
 
-    selectCell($cell) {
-        this.selection.select($cell)
-        this.$emit('table:select', $cell)
-        if ($cell.text()) {
-            toEndLineCursor($cell.node())
-            console.log($cell)
-        }
+    // component preparation and supporting functionality
+    prepare() {
+        this.selection = new TableSelection()
+    }
+
+    toHTML() {
+        return createTable(15, this.store.getState())
+    }
+
+    init() {
+        super.init()
+        const allCells = this.$root.findAll(`[data-type="cell"]`)
+        this.lastId = $(allCells[allCells.length - 1]).id(true)
+
+        this.selectCell(this.$root.find(`[data-id="0:0"]`))
+
+        this.$on('formula:input', text => {
+            this.selection.current.text(text)
+        })
+
+        this.$on('formula:submit', key => {
+            let {row, col} = this.selection.current.id(true)
+            if (key === 'Enter') {
+                row = ++row <= this.lastId.row ? row : this.lastId.row
+            } else {
+                col = ++col <= this.lastId.col ? col : this.lastId.col
+            }
+            this.selectCell(this.$root.find(`[data-id="${row}:${col}"]`))
+        })
+
+        // this.$subscribe(state => {
+        //     console.log('TableState', state)
+        //     localStorage.setItem('state', JSON.stringify(state.colState))
+        // })
     }
 
     onKeydown(event) {
@@ -55,7 +84,7 @@ export class Table extends ExcelComponent {
 
     onMousedown(event) {
         if(shouldResize(event)) {
-            resizeHandler(this.$root, event)
+            this.resizeTable(event)
 
         } else if(isCell(event)) {
             if(event.shiftKey) {
@@ -68,34 +97,21 @@ export class Table extends ExcelComponent {
         }
     }
 
-    // component preparation and supporting functionality
-    prepare() {
-        this.selection = new TableSelection()
+    selectCell($cell) {
+        this.selection.select($cell)
+        this.$emit('table:select', $cell)
+        if ($cell.text()) {
+            toEndLineCursor($cell.node())
+            this.$dispatch('TEST')
+        }
     }
 
-    init() {
-        super.init()
-        const allCells = this.$root.findAll(`[data-type="cell"]`)
-        this.lastId = $(allCells[allCells.length - 1]).id(true)
-
-        this.selectCell(this.$root.find(`[data-id="0:0"]`))
-
-        this.$on('formula:input', text => {
-            this.selection.current.text(text)
-        })
-
-        this.$on('formula:submit', key => {
-            let {row, col} = this.selection.current.id(true)
-            if (key === 'Enter') {
-                row = ++row <= this.lastId.row ? row : this.lastId.row
-            } else {
-                col = ++col <= this.lastId.col ? col : this.lastId.col
-            }
-            this.selectCell(this.$root.find(`[data-id="${row}:${col}"]`))
-        })
-    }
-
-    toHTML() {
-        return createTable(15)
+    async resizeTable(event) {
+        try {
+            const data = await resizeHandler(this.$root, event)
+            this.$dispatch(action.tableResize(data)) // this.$dispatch({type: 'TABLE_RESIZE', data})
+        } catch (e) {
+            console.warn('Resize error', e.message)
+        }
     }
 }

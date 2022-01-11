@@ -58,7 +58,7 @@ module.exports = (env, argv) => {
             }
         },
         devServer: {
-            port: 4000,
+            port: 8800,
             open: true,
             hot: true,
             watchFiles: './',
