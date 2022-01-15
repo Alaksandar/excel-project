@@ -8,7 +8,6 @@ const DEFAULT_HEIGHT = 24
 
 
 function getHeight(row, state) {
-    console.log(state)
     return (state[row] || DEFAULT_HEIGHT) + 'px'
 }
 
@@ -18,9 +17,12 @@ function getWidth(index, state) {
 
 function toCell(row, state) {
     return function(_, index) {
-        const width = getWidth(index, state)
+        const width = getWidth(index, state.colState)
         const style = width !==  DEFAULT_WIDTH + 'px'
                 ? `style="width:${width};` : ''
+        const id = `${row}:${index}`
+        const text = state.dataState[id] || ''
+
         return `
             <div 
                 class="cell"
@@ -28,9 +30,9 @@ function toCell(row, state) {
                 data-type="cell"
                 data-row="${row}"
                 data-col="${index}" 
-                data-id="${row}:${index}"
+                data-id="${id}"
                 contenteditable
-            ></div>
+            >${text}</div>
         `
     }
 }
@@ -55,7 +57,6 @@ function toCol({col, index, width}) {
 function createRow(content, state, index = '') {
     const isResizable = (index || index === 0)
     const height = getHeight(index, state)
-    console.log(height)
 
     return `
         <div 
@@ -85,7 +86,7 @@ export function createTable(rowsCount = 10, state = {}) {
 
     function getWidthFrom(state) {
         return function (col, index) {
-            const width = getWidth(index, state)
+            const width = getWidth(index, state.colState)
             return {col, index, width}
         }
     }
@@ -93,7 +94,7 @@ export function createTable(rowsCount = 10, state = {}) {
     const cols = new Array(colsCount)
         .fill('')
         .map(toChar)
-        .map(getWidthFrom(state.colState))
+        .map(getWidthFrom(state))
         .map(toCol)
         .join('')
     rows.push(createRow(cols, {}))
@@ -101,8 +102,9 @@ export function createTable(rowsCount = 10, state = {}) {
     for (let row = 0; row < rowsCount; row++) {
         const cells = new Array(colsCount)
             .fill('')
-            .map(toCell(row, state.colState))
+            .map(toCell(row, state))
             .join('')
+
         rows.push(createRow(cells, state.rowState, row))
     }
 

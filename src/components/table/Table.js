@@ -6,8 +6,6 @@ import {resizeHandler} from "@/components/table/table.resize"
 import {changeCell, shouldResize, isCell, matrix} from "./table.functions"
 import {TableSelection} from "@/components/table/TableSelection";
 import * as action from "@/redux/actions"
-import {store} from "core-js/internals/reflect-metadata";
-
 
 export class Table extends ExcelComponent {
     static className = 'excel__table'
@@ -35,6 +33,7 @@ export class Table extends ExcelComponent {
         this.lastId = $(allCells[allCells.length - 1]).id(true)
 
         this.selectCell(this.$root.find(`[data-id="0:0"]`))
+        // this.updateTextInStore(this.selection.current.text())
 
         this.$on('formula:input', text => {
             this.selection.current.text(text)
@@ -52,7 +51,7 @@ export class Table extends ExcelComponent {
 
         // this.$subscribe(state => {
         //     console.log('TableState', state)
-        //     localStorage.setItem('state', JSON.stringify(state.colState))
+        //     // localStorage.setItem('state', JSON.stringify(state.colState))
         // })
     }
 
@@ -68,6 +67,7 @@ export class Table extends ExcelComponent {
         if(isCell(event)) {
             const id = this.selection.current.id(true)
             if(keys.includes(event.key) && !event.shiftKey) {
+                // console.log('key', event.key)
                 event.preventDefault()
                 const $next = this.$root.find(changeCell(id, event, this.lastId))
                 this.selectCell($next)
@@ -78,8 +78,16 @@ export class Table extends ExcelComponent {
         }
     }
 
+    updateTextInStore(value) {
+        this.$dispatch(action.changeText({
+            id: this.selection.current.id(),
+            value
+        }))
+    }
+
     onInput(event) {
-        this.$emit('table:input', $(event.target))
+        // this.$emit('table:input', $(event.target))
+        this.updateTextInStore($(event.target).text())
     }
 
     onMousedown(event) {

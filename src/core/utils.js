@@ -22,6 +22,13 @@ export function storage(key, data = null) {
     localStorage.setItem(key, JSON.stringify(data))
 }
 
+export function isEqual(a, b) {
+    if (typeof a === 'object' && typeof b === 'object') {
+        return JSON.stringify(a) === JSON.stringify(b)
+    }
+    return a === b
+}
+
 export function toEndLineCursor(node) {
     if (!(node instanceof HTMLElement)) {
         console.error('Node is not instanceof HTMLElement!')

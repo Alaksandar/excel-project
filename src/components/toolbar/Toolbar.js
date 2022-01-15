@@ -1,4 +1,6 @@
 import {ExcelComponent} from "@core/ExcelComponent";
+import {createToolbar} from "@/components/toolbar/toolbar.template";
+import {$} from "@core/dom";
 
 export class Toolbar extends ExcelComponent {
     static className = 'excel__toolbar'
@@ -6,41 +8,23 @@ export class Toolbar extends ExcelComponent {
     constructor($root, options) {
         super($root, {
             name: 'Toolbar',
+            listeners: ['click'],
             ...options
         });
 
     }
 
-    // onClick() {
-    //     console.log(`${this.name} click`)
-    // }
+    onClick(event) {
+        const target = $(event.target)
+        if (target.data.type === 'button') {
+            const value = target.data.value
+            this.$root.findAll(`[data-value='${value}']`).forEach(el => {
+                $(el).toggleClass('active')
+            })
+        }
+    }
 
     toHTML() {
-        return `
-            <div class="toolbar-buttons">
-                <button class="button-icon">
-                    <i class="material-icons">format_bold</i>
-                </button>
-                <button class="button-icon">
-                    <i class="material-icons">format_italic</i>
-                </button>
-                <button class="button-icon">
-                    <i class="material-icons">format_underlined</i>
-                </button>
-                <button class="button-icon">
-                    <i class="material-icons">format_color_text</i>
-                </button>
-                <button class="button-icon">
-                    <i class="material-icons">format_align_left</i>
-                </button>
-                <button class="button-icon">
-                    <i class="material-icons">format_align_center</i>
-                </button>
-                <button class="button-icon">
-                    <i class="material-icons">format_align_right</i>
-                </button>
-
-            </div>
-        `
+        return createToolbar()
     }
 }

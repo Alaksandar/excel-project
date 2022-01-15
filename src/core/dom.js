@@ -71,6 +71,14 @@ class Dom {
         return this.$el.classList.remove(className)
     }
 
+    toggleClass(className) {
+        if (this.$el.classList.contains(className)) {
+            return this.$el.classList.remove(className)
+        } else {
+            return this.$el.classList.add(className)
+        }
+    }
+
     id(parse) {
         if(parse) {
             const parsed = this.data.id.split(':')

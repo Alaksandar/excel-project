@@ -7,7 +7,7 @@
   height: $toolbar-height;
   padding: 7px 10px;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   border-top: 1px solid $border-color;
   border-bottom: 1px solid $border-color;
   position: absolute;
@@ -17,5 +17,9 @@
 
   .button-icon {
     @include button-icon(green);
+  }
+
+  .active {
+    color: green;
   }
 }
