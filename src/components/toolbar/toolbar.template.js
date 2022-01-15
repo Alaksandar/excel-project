@@ -13,53 +13,45 @@ function toButton(btn) {
     `
 }
 
-export function createToolbar() {
+export function createToolbar(state) {
     const buttons = [
         {
             icon: 'format_bold',
-            active: false,
-            value: {fontWeight: 'bold'}
+            active: state['fontWeight'] === 'bold',
+            value: {fontWeight: state['fontWeight'] === 'bold' ? 'normal' : 'bold'}
 
         },
         {
             icon: 'format_italic',
-            active: false,
-            value: {fontStyle: 'italic'}
+            active: state['fontStyle'] === 'italic',
+            value: {fontStyle: state['fontStyle'] === 'italic' ? 'normal' : 'italic'}
         },
         {
             icon: 'format_underlined',
-            active: false,
-            value: {textDecoration: 'underline'}
+            active: state['textDecoration'] === 'underline',
+            value: {textDecoration: state['textDecoration'] === 'underline' ? 'none' : 'underline'}
         },
         {
             icon: 'format_color_text',
-            active: false,
-            value: {color: 'red'}
+            active: state['color'] === 'red',
+            value: {color: state['color'] === 'red' ? 'black' : 'red'}
         },
         {
             icon: 'format_align_left',
-            active: false,
+            active: state['textAlign'] === 'left',
             value: {textAlign: 'left'}
         },
         {
             icon: 'format_align_center',
-            active: false,
+            active: state['textAlign'] === 'center',
             value: {textAlign: 'center'}
         },
         {
             icon: 'format_align_right',
-            active: false,
+            active: state['textAlign'] === 'right',
             value: {textAlign: 'right'}
         }
     ]
 
     return buttons.map(toButton).join('')
-
-    // return `
-    //     <div class="toolbar-buttons">
-    //         <button class="button-icon">
-    //             <i class="material-icons">format_bold</i>
-    //         </button>
-    //     </div>
-    // `
 }

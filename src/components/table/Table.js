@@ -6,6 +6,7 @@ import {resizeHandler} from "@/components/table/table.resize"
 import {changeCell, shouldResize, isCell, matrix} from "./table.functions"
 import {TableSelection} from "@/components/table/TableSelection";
 import * as action from "@/redux/actions"
+import {defaultStyles} from "@/constants";
 
 export class Table extends ExcelComponent {
     static className = 'excel__table'
@@ -49,10 +50,9 @@ export class Table extends ExcelComponent {
             this.selectCell(this.$root.find(`[data-id="${row}:${col}"]`))
         })
 
-        // this.$subscribe(state => {
-        //     console.log('TableState', state)
-        //     // localStorage.setItem('state', JSON.stringify(state.colState))
-        // })
+        this.$on('toolbar:applyStyle', style => {
+            this.selection.applyStyle(style)
+        })
     }
 
     onKeydown(event) {
@@ -112,6 +112,8 @@ export class Table extends ExcelComponent {
             toEndLineCursor($cell.node())
             this.$dispatch('TEST')
         }
+        $cell.getStyles(Object.keys(defaultStyles))
+        console.log($cell.getStyles(Object.keys(defaultStyles)))
     }
 
     async resizeTable(event) {

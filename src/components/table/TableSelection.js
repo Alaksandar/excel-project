@@ -34,4 +34,10 @@ export class TableSelection {
         })
         return this.group
     }
+
+    applyStyle(style) {
+        this.group.forEach($el => {
+            $el.css(style)
+        })
+    }
 }

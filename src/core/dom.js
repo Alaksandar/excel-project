@@ -103,6 +103,13 @@ class Dom {
         return this
     }
 
+    getStyles(styles = []) {
+        return styles.reduce((res, style) => {
+            res[style] = this.$el.style[style]
+            return res
+        }, {})
+    }
+
     getCoords() {
         return this.$el.getBoundingClientRect()
     }
