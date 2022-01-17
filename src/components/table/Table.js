@@ -1,6 +1,6 @@
-import {ExcelComponent} from "@core/ExcelComponent";
+import {ExcelStateComponent} from "@core/ExcelStateComponent";
 import {$} from "@core/dom";
-import {storage, toEndLineCursor} from "@core/utils";
+import {toEndLineCursor} from "@core/utils";
 import {createTable} from "@/components/table/table.template";
 import {resizeHandler} from "@/components/table/table.resize"
 import {changeCell, shouldResize, isCell, matrix} from "./table.functions"
@@ -8,7 +8,7 @@ import {TableSelection} from "@/components/table/TableSelection";
 import * as action from "@/redux/actions"
 import {defaultStyles} from "@/constants";
 
-export class Table extends ExcelComponent {
+export class Table extends ExcelStateComponent {
     static className = 'excel__table'
 
     constructor($root, options) {
@@ -34,10 +34,11 @@ export class Table extends ExcelComponent {
         this.lastId = $(allCells[allCells.length - 1]).id(true)
 
         this.selectCell(this.$root.find(`[data-id="0:0"]`))
-        // this.updateTextInStore(this.selection.current.text())
+        this.updateTextInStore(this.selection.current.text())
 
         this.$on('formula:input', text => {
             this.selection.current.text(text)
+            this.updateTextInStore(text)
         })
 
         this.$on('formula:submit', key => {
@@ -50,8 +51,12 @@ export class Table extends ExcelComponent {
             this.selectCell(this.$root.find(`[data-id="${row}:${col}"]`))
         })
 
-        this.$on('toolbar:applyStyle', style => {
-            this.selection.applyStyle(style)
+        this.$on('toolbar:applyStyle', value => {
+            this.selection.applyStyle(value)
+            this.$dispatch(action.applyStyle({
+                value,
+                ids: this.selection.groupIds
+            }))
         })
     }
 
@@ -78,13 +83,6 @@ export class Table extends ExcelComponent {
         }
     }
 
-    updateTextInStore(value) {
-        this.$dispatch(action.changeText({
-            id: this.selection.current.id(),
-            value
-        }))
-    }
-
     onInput(event) {
         // this.$emit('table:input', $(event.target))
         this.updateTextInStore($(event.target).text())
@@ -108,12 +106,16 @@ export class Table extends ExcelComponent {
     selectCell($cell) {
         this.selection.select($cell)
         this.$emit('table:select', $cell)
-        if ($cell.text()) {
-            toEndLineCursor($cell.node())
-            this.$dispatch('TEST')
-        }
-        $cell.getStyles(Object.keys(defaultStyles))
-        console.log($cell.getStyles(Object.keys(defaultStyles)))
+        if ($cell.text()) toEndLineCursor($cell.node())
+        const styles = $cell.getStyles(Object.keys(defaultStyles))
+        this.$dispatch(action.changeStyles(styles))
+    }
+
+    updateTextInStore(value) {
+        this.$dispatch(action.changeText({
+            id: this.selection.current.id(),
+            value
+        }))
     }
 
     async resizeTable(event) {

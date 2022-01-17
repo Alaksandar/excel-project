@@ -39,7 +39,6 @@ export class Formula extends ExcelComponent {
 
     storeChanged({currentText}) {
         this.$input.text(currentText)
-        console.log('Formula: currentText', currentText)
     }
 
     onKeydown(event) {

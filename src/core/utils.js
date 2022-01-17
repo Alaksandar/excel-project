@@ -1,4 +1,5 @@
 // Pure functions
+
 export function capitalize(str) {
     if(typeof str !== 'string') {
         return ''
@@ -27,6 +28,18 @@ export function isEqual(a, b) {
         return JSON.stringify(a) === JSON.stringify(b)
     }
     return a === b
+}
+
+export function camelToDashCase(string) {
+    return string.replace(/([A-Z])/g, (g) => `-${g[0].toLowerCase()}`)
+}
+
+export function toInlineStyles(styles = {}) {
+    return Object.keys(styles)
+        .map(key => {
+            return `${camelToDashCase(key)}: ${styles[key]}`
+        })
+        .join('; ')
 }
 
 export function toEndLineCursor(node) {
