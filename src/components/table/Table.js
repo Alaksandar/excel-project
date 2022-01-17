@@ -1,4 +1,4 @@
-import {ExcelStateComponent} from "@core/ExcelStateComponent";
+import {ExcelComponent} from "@core/ExcelComponent";
 import {$} from "@core/dom";
 import {toEndLineCursor} from "@core/utils";
 import {createTable} from "@/components/table/table.template";
@@ -8,7 +8,7 @@ import {TableSelection} from "@/components/table/TableSelection";
 import * as action from "@/redux/actions"
 import {defaultStyles} from "@/constants";
 
-export class Table extends ExcelStateComponent {
+export class Table extends ExcelComponent {
     static className = 'excel__table'
 
     constructor($root, options) {

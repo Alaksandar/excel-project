@@ -1,13 +1,15 @@
 import {storage} from "@core/utils";
-import {defaultStyles} from "@/constants";
+import {defaultStyles, defaultTableName} from "@/constants";
 
 const defaultState = {
     colState: {},
     rowState: {},
     dataState: {},
     stylesState: {},
+    currentStyles: defaultStyles,
     currentText: '',
-    currentStyles: defaultStyles
+    tableName: defaultTableName
+
 }
 
 function normalize(state) {

@@ -5,3 +5,5 @@ export const defaultStyles = {
     fontWeight: 'normal',
     color: 'black'
 }
+
+export const defaultTableName = 'Новая таблица'
