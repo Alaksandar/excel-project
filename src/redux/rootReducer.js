@@ -8,7 +8,7 @@ export function rootReducer(state, action) {
 
         case CHANGE_TITLE:
             value = state['tableName'] || defaultTableName
-            return {...state, tableName: action.data}
+            return {...state, title: action.data}
 
         case TABLE_RESIZE:
             field = action.data.type === 'col' ? 'colState' : 'rowState'
