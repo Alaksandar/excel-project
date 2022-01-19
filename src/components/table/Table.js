@@ -89,7 +89,6 @@ export class Table extends ExcelComponent {
 
     onInput(event) {
         this.$emit('table:input', $(event.target))
-        // const text = $(event.target).text()
         $(event.target).data.value = $(event.target).text()
         this.updateTextInStore($(event.target).text())
     }
