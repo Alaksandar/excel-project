@@ -1,20 +1,23 @@
 import {ExcelComponent} from "@core/ExcelComponent";
 import {$} from "@core/dom";
 import {toEndLineCursor} from "@core/utils";
-import {createTable} from "@/components/table/table.template";
+import {colsCount, createTable} from "@/components/table/table.template";
 import {resizeHandler} from "@/components/table/table.resize"
 import {changeCell, shouldResize, isCell, matrix} from "./table.functions"
 import {TableSelection} from "@/components/table/TableSelection";
 import * as action from "@/redux/actions"
 import {defaultStyles} from "@/constants";
+import {parse} from "@core/parse";
 
 export class Table extends ExcelComponent {
     static className = 'excel__table'
+    static rowsCount = 15
 
     constructor($root, options) {
         super($root, {
             name: 'Table',
             listeners: ['mousedown', 'keydown', 'input'],
+            subscribe: ['currentText'],
             ...options // Excel: componentOptions
         });
     }
@@ -25,28 +28,30 @@ export class Table extends ExcelComponent {
     }
 
     toHTML() {
-        return createTable(15, this.store.getState())
+        return createTable(Table.rowsCount, this.store.getState())
     }
 
     init() {
         super.init()
-        const allCells = this.$root.findAll(`[data-type="cell"]`)
-        this.lastId = $(allCells[allCells.length - 1]).id(true)
+
+        const [lastRow, lastCol] = [Table.rowsCount - 1, colsCount - 1]
+        this.lastCellId = {lastRow, lastCol}
 
         this.selectCell(this.$root.find(`[data-id="0:0"]`))
-        this.updateTextInStore(this.selection.current.text())
 
-        this.$on('formula:input', text => {
-            this.selection.current.text(text)
-            this.updateTextInStore(text)
+        this.$on('formula:input', value => {
+            this.selection.current
+                .attr('data-value', value)
+            this.selection.current.text(parse(value))
+            this.updateTextInStore(value)
         })
 
         this.$on('formula:submit', key => {
             let {row, col} = this.selection.current.id(true)
             if (key === 'Enter') {
-                row = ++row <= this.lastId.row ? row : this.lastId.row
+                row = ++row <= lastRow ? row : lastRow
             } else {
-                col = ++col <= this.lastId.col ? col : this.lastId.col
+                col = ++col <= lastCol ? col : lastCol
             }
             this.selectCell(this.$root.find(`[data-id="${row}:${col}"]`))
         })
@@ -72,9 +77,8 @@ export class Table extends ExcelComponent {
         if(isCell(event)) {
             const id = this.selection.current.id(true)
             if(keys.includes(event.key) && !event.shiftKey) {
-                // console.log('key', event.key)
                 event.preventDefault()
-                const $next = this.$root.find(changeCell(id, event, this.lastId))
+                const $next = this.$root.find(changeCell(id, event, this.lastCellId))
                 this.selectCell($next)
             }
             if (event.key === 'Tab' && event.shiftKey) {
@@ -84,7 +88,9 @@ export class Table extends ExcelComponent {
     }
 
     onInput(event) {
-        // this.$emit('table:input', $(event.target))
+        this.$emit('table:input', $(event.target))
+        // const text = $(event.target).text()
+        $(event.target).data.value = $(event.target).text()
         this.updateTextInStore($(event.target).text())
     }
 
@@ -105,10 +111,10 @@ export class Table extends ExcelComponent {
 
     selectCell($cell) {
         this.selection.select($cell)
-        this.$emit('table:select', $cell)
-        if ($cell.text()) toEndLineCursor($cell.node())
         const styles = $cell.getStyles(Object.keys(defaultStyles))
         this.$dispatch(action.changeStyles(styles))
+        this.$emit('table:select', $cell)
+        if ($cell.text()) toEndLineCursor($cell.node())
     }
 
     updateTextInStore(value) {

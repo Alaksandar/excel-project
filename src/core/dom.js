@@ -14,8 +14,8 @@ class Dom {
     }
 
     text(text) {
-        if (typeof text === 'string') {
-            return this.$el.textContent = text.trim()
+        if (typeof text !== "undefined") {
+            return this.$el.textContent = text.toString().trim()
         }
         if (this.$el.tagName.toLowerCase() === 'input') {
             return this.$el.value.trim()
@@ -53,6 +53,14 @@ class Dom {
 
     get data() {
         return this.$el.dataset
+    }
+
+    attr(name, value) {
+        if(value) {
+            this.$el.setAttribute(name, value)
+            return this
+        }
+        return this.$el.getAttribute(name)
     }
 
     find(selector) {

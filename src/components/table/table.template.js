@@ -1,11 +1,12 @@
 import {toInlineStyles} from "@core/utils";
 import {defaultStyles} from "@/constants";
+import {parse} from "@core/parse";
 
 const CODES = {
     A: 65,
     Z: 90
 }
-
+export const colsCount = CODES.Z - CODES.A + 1
 const DEFAULT_WIDTH = 120
 const DEFAULT_HEIGHT = 24
 
@@ -27,18 +28,19 @@ function toCell(row, state) {
             ...defaultStyles,
             ...state.stylesState[id]
         }) + ';'
-        const text = state.dataState[id] || ''
+        const value = state.dataState[id]
 
         return `
-            <div 
+            <div
                 class="cell"
                 style="${styles}${width}"
                 data-type="cell"
                 data-row="${row}"
                 data-col="${index}" 
                 data-id="${id}"
+                data-value="${value || ''}"
                 contenteditable
-            >${text}</div>
+            >${parse(value) || ''}</div>
         `
     }
 }
@@ -87,7 +89,6 @@ function toChar(_, index) {
 }
 
 export function createTable(rowsCount = 10, state = {}) {
-    const colsCount = CODES.Z - CODES.A + 1
     const rows = []
 
     function getWidthFrom(state) {
