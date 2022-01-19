@@ -51,14 +51,17 @@ module.exports = (env, argv) => {
             clean: true,
         },
         resolve: {
-            extensions: ['.js'],
+            extensions: ['.js', '.json'],
             alias: {
                 '@': path.resolve(__dirname, 'src'),
                 '@core': path.resolve(__dirname, 'src', 'core'),
-            }
+            },
+            fallback: {
+                "fs": false,
+                "path": require.resolve("path-browserify"),            },
         },
         devServer: {
-            port: 4000,
+            port: 8800,
             open: true,
             hot: true,
             watchFiles: './',

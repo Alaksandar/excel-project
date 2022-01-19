@@ -8,23 +8,9 @@ export class Formula extends ExcelComponent {
         super($root, {
             name: 'Formula',
             listeners: ['input', 'keydown'],
+            subscribe: ['currentText'],
             ...options
         });
-    }
-
-    onKeydown(event) {
-        if (event.key === 'Enter') {
-            event.preventDefault()
-            this.$emit('formula:submit', 'Enter')
-        }
-        if (event.key === 'Tab') {
-            event.preventDefault()
-            this.$emit('formula:submit', 'Tab')
-        }
-    }
-
-    onInput(event) {
-        this.$emit('formula:input', $(event.target).text())
     }
 
     toHTML() {
@@ -39,10 +25,22 @@ export class Formula extends ExcelComponent {
         this.$input = this.$root.find('#formula')
 
         this.$on('table:select', $cell => {
-            this.$input.text($cell.text())
+            this.$input.text($cell.data.value)
         })
-        this.$on('table:input', $cell => {
-            this.$input.text($cell.text())
-        })
+    }
+
+    storeChanged({currentText}) {
+        this.$input.text(currentText)
+    }
+
+    onKeydown(event) {
+        const keys = ['Enter', 'Tab']
+        if (!keys.includes(event.key)) return
+        event.preventDefault()
+        this.$emit('formula:submit', event.key)
+    }
+
+    onInput(event) {
+        this.$emit('formula:input', $(event.target).text())
     }
 }

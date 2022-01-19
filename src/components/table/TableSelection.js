@@ -34,4 +34,12 @@ export class TableSelection {
         })
         return this.group
     }
+
+    get groupIds() {
+        return this.group.map($el => $el.id())
+    }
+
+    applyStyle(style) {
+        this.group.forEach($el => $el.css(style))
+    }
 }

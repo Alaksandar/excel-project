@@ -14,8 +14,8 @@ class Dom {
     }
 
     text(text) {
-        if (typeof text === 'string') {
-            return this.$el.textContent = text.trim()
+        if (typeof text !== "undefined") {
+            return this.$el.textContent = text.toString().trim()
         }
         if (this.$el.tagName.toLowerCase() === 'input') {
             return this.$el.value.trim()
@@ -55,6 +55,14 @@ class Dom {
         return this.$el.dataset
     }
 
+    attr(name, value) {
+        if(value) {
+            this.$el.setAttribute(name, value)
+            return this
+        }
+        return this.$el.getAttribute(name)
+    }
+
     find(selector) {
         return $(this.$el.querySelector(selector))
     }
@@ -69,6 +77,14 @@ class Dom {
 
     removeClass(className) {
         return this.$el.classList.remove(className)
+    }
+
+    toggleClass(className) {
+        if (this.$el.classList.contains(className)) {
+            return this.$el.classList.remove(className)
+        } else {
+            return this.$el.classList.add(className)
+        }
     }
 
     id(parse) {
@@ -93,6 +109,13 @@ class Dom {
                 this.$el.style[key] = styles[key]
         })
         return this
+    }
+
+    getStyles(styles = []) {
+        return styles.reduce((res, style) => {
+            res[style] = this.$el.style[style]
+            return res
+        }, {})
     }
 
     getCoords() {

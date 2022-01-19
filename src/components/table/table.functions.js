@@ -1,4 +1,5 @@
 import {range} from "@core/utils";
+import {$} from "@core/dom";
 
 export function shouldResize(event) {
     return event.target.dataset.resize
@@ -21,18 +22,19 @@ export  function matrix($target, $current) {
     }, [])
 }
 
-export function changeCell({row, col}, event, lastId) {
+export function changeCell({row, col}, event, lastCellId) {
+    const {lastRow, lastCol} = lastCellId
     switch (event.key) {
         case "Enter":
         case "ArrowDown":
-            row = ++row <= lastId.row ? row : lastId.row
+            row = ++row <= lastRow ? row : lastRow
             break;
         case "ArrowUp":
             row = --row >= 0 ? row : 0
             break;
         case "Tab":
         case "ArrowRight":
-            col = ++col <= lastId.col ? col : lastId.col
+            col = ++col <= lastCol ? col : lastCol
             break;
         case "ArrowLeft":
             col = --col >= 0 ? col : 0
