@@ -6,4 +6,4 @@ export const defaultStyles = {
     color: 'black'
 }
 
-export const defaultTableName = 'Новая таблица'
+export const defaultTitle = 'Новая таблица'

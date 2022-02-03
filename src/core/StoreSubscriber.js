@@ -12,7 +12,6 @@ export class StoreSubscriber {
 
         this.sub = this.store.subscribe(state => {
             Object.keys(state).forEach(key =>{
-                // console.log('key', key)
                 if (!isEqual(this.oldState[key], state[key])) {
                     components.forEach(component => {
                         if (component.isWatching(key)) { // component.subscribe.includes(key)
@@ -23,6 +22,10 @@ export class StoreSubscriber {
                 }
             })
             this.oldState = this.store.getState()
+
+            if (process.env.NODE_ENV === 'development') {
+                window['redux'] = this.oldState
+            }
         })
     }
 

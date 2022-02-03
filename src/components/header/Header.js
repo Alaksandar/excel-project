@@ -1,9 +1,11 @@
 import {ExcelComponent} from "@core/ExcelComponent";
-import {defaultTableName} from "@/constants";
+import {defaultTitle} from "@/constants";
 import * as action from "@/redux/actions";
 import {$} from "@core/dom";
-import {debounce} from "@core/utils";
+import {debounce, removeStorage} from "@core/utils";
 import {changeTitle} from "@/redux/actions";
+import {ActiveRoute} from "@core/route/ActiveRoute";
+
 
 export class Header extends ExcelComponent {
     static className = 'excel__header'
@@ -11,7 +13,7 @@ export class Header extends ExcelComponent {
     constructor($root, options) {
         super($root, {
             name: 'Header',
-            listeners: ['input'],
+            listeners: ['input', 'click'],
             ...options
         });
     }
@@ -21,15 +23,15 @@ export class Header extends ExcelComponent {
     }
 
     toHTML() {
-        const title = this.store.getState().title || defaultTableName
+        const title = this.store.getState().title || defaultTitle
         return `
             <input id="title" type="text" class="header-input" value="${title}">
             <div class="header-buttons">
-                <button class="button-icon">
-                    <i class="material-icons">delete</i>
+                <button class="button-icon" data-type="delete">
+                    <i class="material-icons" data-type="delete">delete</i>
                 </button>
                 <button class="button-icon">
-                    <i class="material-icons">exit_to_app</i>
+                    <i class="material-icons" data-type="exit">exit_to_app</i>                    
                 </button>
             </div>
         `
@@ -38,5 +40,17 @@ export class Header extends ExcelComponent {
     onInput(event) {
         const target = $(event.target)
         this.$dispatch(changeTitle(target.text()))
+    }
+
+    onClick(event) {
+        if ($(event.target).data.type === 'delete') {
+            const deleteTableWarning = confirm("Действительно хотите удалить таблицу?")
+            if (deleteTableWarning) {
+                removeStorage('excel:' + ActiveRoute.param[1])
+                ActiveRoute.navigate('')
+            }
+        } else if ($(event.target).data.type === 'exit') {
+            ActiveRoute.navigate('')
+        }
     }
 }

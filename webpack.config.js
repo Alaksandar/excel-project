@@ -1,13 +1,15 @@
+const webpack = require('webpack')
+const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const ESLintPlugin = require('eslint-webpack-plugin')
-const path = require('path')
-const {plugins} = require("@babel/preset-env/lib/plugins-compat-data");
+const {plugins} = require('@babel/preset-env/lib/plugins-compat-data');
 
 module.exports = (env, argv) => {
 
     const isProd = argv.mode === 'production'
+    console.log(env, argv.mode)
 
     const filename = (ext) => isProd ? `[name].[contenthash:8].bundle.${ext}` : `[name].bundle.${ext}`
 
@@ -28,8 +30,11 @@ module.exports = (env, argv) => {
             new MiniCssExtractPlugin({
                 filename: filename('css')
             }),
+            new webpack.DefinePlugin({
+                'process.env.NODE_ENV': JSON.stringify(argv.mode),
+            }),
         ]
-        console.log(argv.mode)
+
         !isProd ? base.push(new ESLintPlugin()) : false
 
         return base
