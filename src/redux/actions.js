@@ -1,6 +1,9 @@
-import {APPLY_STYLE, CHANGE_STYLES, CHANGE_TEXT, CHANGE_TITLE, TABLE_RESIZE} from "@/redux/types";
+import {
+    APPLY_STYLE, CHANGE_STYLES, CHANGE_TEXT,
+    CHANGE_TITLE, TABLE_RESIZE, UPDATE_DATE,
+} from "@/redux/types";
 
-// Action Creator:
+// Action Creators:
 
 export function changeTitle(data) {
     return {
@@ -34,5 +37,11 @@ export function applyStyle(data) {
     return {
         type: APPLY_STYLE,
         data // {value, ids}
+    }
+}
+
+export function updateDate() {
+    return {
+        type: UPDATE_DATE
     }
 }

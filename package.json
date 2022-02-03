@@ -6,6 +6,7 @@
   "scripts": {
     "start": "webpack serve --mode=development",
     "build": "webpack --mode=production",
+    "lint": "npx eslint ./src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -35,8 +36,8 @@
     "path-browserify": "^1.0.1",
     "sass": "^1.43.5",
     "sass-loader": "^12.3.0",
-    "webpack": "^5.64.4",
-    "webpack-cli": "^4.9.1",
+    "webpack": "^5.67.0",
+    "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.7.3"
   },
   "dependencies": {
