@@ -11,7 +11,7 @@ import {parse} from "@core/parse";
 
 export class Table extends ExcelComponent {
     static className = 'excel__table'
-    static rowsCount = 15
+    static rowsCount = 25
 
     constructor($root, options) {
         super($root, {

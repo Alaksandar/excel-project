@@ -5,7 +5,6 @@
 
   &__header {
     height: $db-header-height;
-    //position: fixed;
     position: -webkit-sticky;
     position: sticky;
     top: 0;
@@ -50,7 +49,6 @@
       &:hover {
         cursor: pointer;
         color: green;
-        //border: 2px solid #0cb40c;
         box-shadow: 0 2px 5px 2px #438243;
       }
     }
@@ -95,7 +93,6 @@
     &-record {
       margin-bottom: 1rem;
       font-size: 14px;
-      //box-shadow: 0 2px 5px 2px rgba(0,0,0,0.25);
 
       a {
         display: flex;
@@ -105,9 +102,12 @@
         color: #888888;
         text-decoration: none;
         width: 100%;
+        border-radius: 20px;
 
-        span {
-          max-width: 65%;
+        .record-title {
+          width: 59%;
+          font-size: 15px;
+          padding-right: 1rem;
         }
 
         .record-date {
@@ -133,5 +133,4 @@
     display: inherit;
     flex-wrap: inherit;
   }
-
 }
