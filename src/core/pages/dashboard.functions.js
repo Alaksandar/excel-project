@@ -7,9 +7,12 @@ function toHtml(key) {
     return `
         <li class="dashboard__list-record" key=${key}>
             <a href="#excel/${id}">
-                <span>
-                    ${storage(key).title}
-                </span>
+                <div class="record-title">
+                    <span>
+                        ${storage(key).title}
+                    </span>
+                </div>
+
                 <div class="record-date">
                     <strong>
                         ${date.toLocaleDateString()}

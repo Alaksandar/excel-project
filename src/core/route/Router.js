@@ -1,5 +1,5 @@
-import {$} from "@core/dom";
-import {ActiveRoute} from "@core/route/ActiveRoute";
+import {$} from "../dom";
+import {ActiveRoute} from "./ActiveRoute";
 
 export class Router {
     constructor(selector, routes) {
@@ -9,16 +9,16 @@ export class Router {
         this.routes = routes
         this.page = null
 
-        this.pageHandler = this.pageHandler.bind(this)
+        this.changePageHandler = this.changePageHandler.bind(this)
         this.init()
     }
 
     init() {
-        window.addEventListener("hashchange", this.pageHandler)
-        this.pageHandler()
+        window.addEventListener("hashchange", this.changePageHandler)
+        this.changePageHandler()
     }
 
-    pageHandler() {
+    changePageHandler() {
         if(this.page) this.page.destroy()
         this.$placeholder.clear()
 
@@ -32,6 +32,6 @@ export class Router {
     }
 
     destroy() {
-        window.removeEventListener("hashchange", this.pageHandler)
+        window.removeEventListener("hashchange", this.changePageHandler)
     }
 }
