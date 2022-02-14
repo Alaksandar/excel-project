@@ -1,10 +1,9 @@
-import {ExcelComponent} from "@core/ExcelComponent";
-import {defaultTitle} from "@/constants";
-import * as action from "@/redux/actions";
-import {$} from "@core/dom";
-import {debounce, removeStorage} from "@core/utils";
-import {changeTitle} from "@/redux/actions";
-import {ActiveRoute} from "@core/route/ActiveRoute";
+import {ExcelComponent} from "@core/ExcelComponent"
+import {defaultTitle} from "@/shared/constants"
+import {$} from "@core/dom"
+import {debounce, removeStorage} from "@core/utils"
+import {changeTitle} from "@/redux/actions"
+import {ActiveRoute} from "@core/route/ActiveRoute"
 
 
 export class Header extends ExcelComponent {

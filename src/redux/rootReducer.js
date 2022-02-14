@@ -1,8 +1,8 @@
 import {
     APPLY_STYLE, CHANGE_STYLES, CHANGE_TEXT,
     CHANGE_TITLE, TABLE_RESIZE, UPDATE_DATE
-} from "@/redux/types";
-import {defaultTitle} from "@/constants";
+} from "@/redux/types"
+import {defaultTitle} from "@/shared/constants"
 
 export function rootReducer(state, action) {
     let field

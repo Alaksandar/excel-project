@@ -1,8 +1,8 @@
-import {DOMListener} from "@core/DOMListener";
+import {DOMListener} from "@core/DOMListener"
 
 export class ExcelComponent extends DOMListener {
      constructor($root, options = {}) {
-         super($root, options.listeners);
+         super($root, options.listeners)
          this.name = options.name || ''
          this.subscribe = options.subscribe || [] // subscribe to state fields
          this.store = options.store     // Excel: {componentOptions}
@@ -56,5 +56,3 @@ export class ExcelComponent extends DOMListener {
         this.unsubscribers.forEach(unsub => unsub())
     }
 }
-
-

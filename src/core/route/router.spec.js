@@ -3,8 +3,8 @@
  */
 // or: "test": "jest --env=jsdom" at package.json
 
-import {Router} from "./Router";
-import {Page} from "../Page";
+import {Router} from "@core/route/Router"
+import {Page} from "@core/page/Page"
 
 class DashboardPage extends Page {
     getRoot() {
@@ -33,6 +33,7 @@ describe('Router:', () => {
 
     test("shoud render DB Page", () => {
         router.changePageHandler()
-        expect($root.innerHTML).toBe('<div>dashboard</div>')
+        // expect($root.innerHTML).toBe('<div>dashboard</div>')
+        expect($root.innerHTML).toBe('<div class="loader"><div class="lds-dual-ring"></div></div>')
     })
 })

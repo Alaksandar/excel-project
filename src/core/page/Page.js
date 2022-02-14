@@ -1,6 +1,6 @@
 export class Page {
     constructor(params) {
-        this.param = params[1]
+        this.param = params[1] || Date.now().toString()
     }
 
     getRoot() {
