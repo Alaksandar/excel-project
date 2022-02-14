@@ -1,5 +1,5 @@
-import {clone} from "@core/utils";
-import {defaultStyles, defaultTitle} from "@/constants";
+import {clone} from "@core/utils"
+import {defaultStyles, defaultTitle} from "@/shared/constants"
 
 const defaultState = {
     colState: {},

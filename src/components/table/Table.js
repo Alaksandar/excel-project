@@ -1,13 +1,13 @@
-import {ExcelComponent} from "@core/ExcelComponent";
-import {$} from "@core/dom";
-import {toEndLineCursor} from "@core/utils";
-import {colsCount, createTable} from "@/components/table/table.template";
+import {ExcelComponent} from "@core/ExcelComponent"
+import {$} from "@core/dom"
+import {toEndLineCursor} from "@core/utils"
+import {colsCount, createTable} from "@/components/table/table.template"
 import {resizeHandler} from "@/components/table/table.resize"
 import {changeCell, shouldResize, isCell, matrix} from "./table.functions"
-import {TableSelection} from "@/components/table/TableSelection";
+import {TableSelection} from "@/components/table/TableSelection"
 import * as action from "@/redux/actions"
-import {defaultStyles} from "@/constants";
-import {parse} from "@core/parse";
+import {defaultStyles} from "@/shared/constants"
+import {parse} from "@core/parse"
 
 export class Table extends ExcelComponent {
     static className = 'excel__table'
@@ -40,8 +40,7 @@ export class Table extends ExcelComponent {
         this.selectCell(this.$root.find(`[data-id="0:0"]`))
 
         this.$on('formula:input', value => {
-            this.selection.current
-                .attr('data-value', value)
+            this.selection.current.attr('data-value', value)
             this.selection.current.text(parse(value))
             this.updateTextInStore(value)
         })
@@ -54,6 +53,7 @@ export class Table extends ExcelComponent {
                 col = ++col <= lastCol ? col : lastCol
             }
             this.selectCell(this.$root.find(`[data-id="${row}:${col}"]`))
+
         })
 
         this.$on('toolbar:applyStyle', value => {
@@ -88,7 +88,7 @@ export class Table extends ExcelComponent {
     }
 
     onInput(event) {
-        this.$emit('table:input', $(event.target))
+        this.$emit('table:input', $(event.target).text())
         $(event.target).data.value = $(event.target).text()
         this.updateTextInStore($(event.target).text())
     }

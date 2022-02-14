@@ -1,7 +1,7 @@
 import {
     APPLY_STYLE, CHANGE_STYLES, CHANGE_TEXT,
     CHANGE_TITLE, TABLE_RESIZE, UPDATE_DATE,
-} from "@/redux/types";
+} from "@/redux/types"
 
 // Action Creators:
 

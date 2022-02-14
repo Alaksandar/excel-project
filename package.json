@@ -46,5 +46,11 @@
     "core-js": "^3.9.0",
     "normalize.css": "^8.0.1",
     "regenerator-runtime": "^0.13.9"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1",
+      "^@core/(.*)$": "<rootDir>/src/core/$1"
+    }
   }
 }

@@ -1,5 +1,5 @@
-import {ExcelComponent} from '@core/ExcelComponent';
-import {$} from "@core/dom";
+import {ExcelComponent} from '@core/ExcelComponent'
+import {$} from "@core/dom"
 
 export class Formula extends ExcelComponent {
     static className = 'excel__formula'
@@ -27,10 +27,10 @@ export class Formula extends ExcelComponent {
         this.$on('table:select', $cell => {
             this.$input.text($cell.data.value)
         })
-    }
 
-    storeChanged({currentText}) {
-        this.$input.text(currentText)
+        this.$on('table:input', value => {
+            this.$input.text(value)
+        })
     }
 
     onKeydown(event) {

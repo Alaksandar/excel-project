@@ -65,12 +65,12 @@ export function toEndLineCursor(node) {
         console.error('Node is not instanceof HTMLElement!')
         return
     }
-    const range = document.createRange();
-    range.selectNodeContents(node);
-    range.collapse(false);
-    const sel = window.getSelection();
-    sel.removeAllRanges();
-    sel.addRange(range);
+    const range = document.createRange()
+    range.selectNodeContents(node)
+    range.collapse(false)
+    const sel = window.getSelection()
+    sel.removeAllRanges()
+    sel.addRange(range)
 }
 
 export function clone(obj) {
